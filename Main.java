@@ -11,6 +11,11 @@ public class Main {
         String input = console.nextLine();                                                                              // создаем сканер
         System.out.println(calc(input));                                                                                // выводим в консоль результат вычислений
     }
+    static class CalculatorException extends Exception {
+        public CalculatorException(String description) {
+            super(description);
+        }
+    }
     static boolean tryParseInt(String value) {                                                                          // проверяем введена строка или число
         try {                                                                                                           //
             Integer.parseInt(value);                                                                                    // если удается перевести в число, значит в строке число
