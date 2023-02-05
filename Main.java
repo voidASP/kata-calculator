@@ -8,39 +8,39 @@ public class Main {
         System.out.println("Введите выражение форматом \"a + b\" (принимаются только римские (I, II, III...) и арабские (1,2,3...)");
         System.out.println("цифры от 1 до 10 (от I до X), а также операторы \"+\", \"-\", \"*\", \"/\".");
         System.out.println("Нельзя использовать разные типы чисел в одном выражении.");
-        String input = console.nextLine();                                                                              // создаем сканер
-        System.out.println(calc(input));                                                                                // выводим в консоль результат вычислений
+        String input = console.nextLine();
+        System.out.println(calc(input));
     }
     static class CalculatorException extends Exception {
         public CalculatorException(String description) {
             super(description);
         }
     }
-    static boolean tryParseInt(String value) {                                                                          // проверяем введена строка или число
-        try {                                                                                                           //
-            Integer.parseInt(value);                                                                                    // если удается перевести в число, значит в строке число
-            return true;                                                                                                // возвращаем true
-        } catch (NumberFormatException e) {                                                                             // если получаем exception, значит в строке не число
-            return false;                                                                                               // возвращаем false
+    static boolean tryParseInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
-    static int toArabic(String romanianNumber) throws CalculatorException {                                             // перевод римского числа в арабское
-        int arabicNumber = 0;                                                                                           // инициализация локальной переменной
-        for (int i = ROMANIANNUMBERS.length - 1; i >= 0; i--) {                                                         // перебираем массив с римскими числами пока не найдем эквивалентное число
-            arabicNumber++;                                                                                             // увеличиваем счётчик, количество витков будет соответствовать арабскому числу
-            if (romanianNumber.equalsIgnoreCase(ROMANIANNUMBERS[i])) {                                                            // если введенное римское число соответствует числу в массиве
-                break;                                                                                                  // завершаем цикл
-            } else if ( arabicNumber > 10 ) {                                                                           // если счётчик выше 10, значит введенное число не соответствует заданному диапазону
-                throw new CalculatorException("Одно из введенных чисел превышает допустимый диапазон значений.");       // если число не найдено или не соответсвует заданному диапазону, завершаем программу с ошибкой
+    static int toArabic(String romanianNumber) throws CalculatorException {
+        int arabicNumber = 0;
+        for (int i = ROMANIANNUMBERS.length - 1; i >= 0; i--) {
+            arabicNumber++;
+            if (romanianNumber.equalsIgnoreCase(ROMANIANNUMBERS[i])) {
+                break;
+            } else if ( arabicNumber > 10 ) {
+                throw new CalculatorException("Одно из введенных чисел превышает допустимый диапазон значений.");
             }
         }
-        return arabicNumber;                                                                                            // возвращаем значение арабского числа, если оно было найдено в массиве
+        return arabicNumber;
     }
-    static int operation(String[] expression) throws CalculatorException {                                              // проверяем оператор на соответствие заданному значению
-        int a = Integer.parseInt(expression[0]);                                                                        // переводим переданный в метод элемент массива в число
-        int b = Integer.parseInt(expression[2]);                                                                        // - // -
+    static int operation(String[] expression) throws CalculatorException {
+        int a = Integer.parseInt(expression[0]);
+        int b = Integer.parseInt(expression[2]);
         int arabicResult = 0;
-        switch (expression[1]) {                                                                                        // и выполняем необходимое действие
+        switch (expression[1]) {
             case "+":
                 arabicResult = a + b;
                 break;
@@ -53,47 +53,47 @@ public class Main {
             case "/":
                 arabicResult = a / b;
                 break;
-            default:                                                                                                    // если оператор не соответствует заданному списку значений
-                throw new CalculatorException("Оператор не соответствует заданному значению.");                         // выбрасываем ошибку
-        } return arabicResult;                                                                                          // возвращаем целочисленный результат выполнения программы
+            default:
+                throw new CalculatorException("Оператор не соответствует заданному значению.");
+        } return arabicResult;
     }
-    public static String calc(String input) throws CalculatorException {                                                // сам калькулятор
-        int arabicResult = 0;                                                                                           // объявляем локальную переменную
-        String stringResult = "";                                                                                       // объявляем переменную для строкового возвращаемого значения результата
-        String[] expression = input.split(" ");                                                                   // разбиваем массив с введенными данными на операнды и оператор
-        int a = 0;                                                                                                      // объявляем локальные переменные для самого выражения
-        int b = 0;                                                                                                      // -//-
-        if (expression.length != 3) {                                                                                   // если длина массива не соответствует 3 ( формату выражения операнд - оператор - операнд)
-            throw new CalculatorException("Формат математической операции не удовлетворяет заданию.");                  // выбрасываем ошибку
+    public static String calc(String input) throws CalculatorException {
+        int arabicResult = 0;
+        String stringResult = "";
+        String[] expression = input.split(" ");
+        int a = 0;
+        int b = 0;
+        if (expression.length != 3) {
+            throw new CalculatorException("Формат математической операции не удовлетворяет заданию.");
         }
-        boolean isFirstnumber = tryParseInt(expression[0]);                                                             // проверяем тип первого операнда
-        boolean isSecondNumber = tryParseInt(expression[2]);                                                            // проверяем тип второго операнда
-        if (!isFirstnumber && isSecondNumber || isFirstnumber && !isSecondNumber) {                                     // если первое или второе число отличаются друг от друга системой счисления
-            throw new CalculatorException("Введенные значения не могут быть в разных системах счисления.");             // выбрасываем ошибку
+        boolean isFirstnumber = tryParseInt(expression[0]);
+        boolean isSecondNumber = tryParseInt(expression[2]);
+        if (!isFirstnumber && isSecondNumber || isFirstnumber && !isSecondNumber) {
+            throw new CalculatorException("Введенные значения не могут быть в разных системах счисления.");
         }
-        if (isFirstnumber && isSecondNumber) {                                                                          // если оба числа целые
-            a = Integer.parseInt(expression[0]);                                                                        // переводим из строки в число
-            b = Integer.parseInt(expression[2]);                                                                        // -//-
-            if (a > 10 || b > 10) {                                                                                     // если первое или второе число больше 10
-                throw new CalculatorException("Одно из введенных чисел превышает допустимый диапазон значений.");       // выбрасываем ошибку
+        if (isFirstnumber && isSecondNumber) {
+            a = Integer.parseInt(expression[0]);
+            b = Integer.parseInt(expression[2]);
+            if (a > 10 || b > 10) {
+                throw new CalculatorException("Одно из введенных чисел превышает допустимый диапазон значений.");
             }
-            arabicResult = operation(expression);                                                                       // вычисляем выражение
-            stringResult = arabicResult + "";                                                                           // переводим целочисленную переменную в строковую
-        } else if (!isFirstnumber && !isSecondNumber) {                                                                 // если оба операнда имеют строковое значение (т.е. являются римскими числами из заданного диапазона)
-            expression[0] = toArabic(expression[0]) + "";                                                               // переводим в арабское число первый операнд
+            arabicResult = operation(expression);
+            stringResult = arabicResult + "";
+        } else if (!isFirstnumber && !isSecondNumber) {
+            expression[0] = toArabic(expression[0]) + "";
             expression[2] = toArabic(expression[2]) + "";
             arabicResult = operation(expression);// переводим в арабское число второй операнд
             if (arabicResult <= 0) {
                 throw new CalculatorException("В римской системе счисления нет 0 и отрицательных чисел.");
             }
-            for(int i = 0; i < ARABICNUMBERS.length; i++) {                                                             // перевод результата арабских чисел в римское
-                while(arabicResult >= ARABICNUMBERS[i]) {                                                               // пока результат вычислений больше или равен числу из массива целых чисел с индексом i
-                    int temp = arabicResult / ARABICNUMBERS[i];                                                         // объявляем локальную переменную для хранения промежуточного значения и передаем в нее результат деления результата вычислений и первого i-того элемента целочисленного массива
-                    arabicResult = arabicResult % ARABICNUMBERS[i];                                                     // вычисляем остаток от деления результата вычислений и i-того элемента целочисленного массива и присваиваем его результату вычислений
-                    for(int j = 0; j < temp; j++)                                                                       // счётчик
-                        stringResult += String.join("", ROMANIANNUMBERS[i]);                                   // при первом витке присвоится значение десятков, которое будет взято из i-того элемента массива с римскими числами, при втором витке будет присвоен разряд единиц
+            for(int i = 0; i < ARABICNUMBERS.length; i++) {
+                while(arabicResult >= ARABICNUMBERS[i]) {
+                    int temp = arabicResult / ARABICNUMBERS[i];
+                    arabicResult = arabicResult % ARABICNUMBERS[i];
+                    for(int j = 0; j < temp; j++)
+                        stringResult += String.join("", ROMANIANNUMBERS[i]);
                 }
             }
-        }   return stringResult;                                                                                        // возвращаем результат вычислений в метод main
+        }   return stringResult;
     }
 }
